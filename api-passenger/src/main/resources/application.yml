@@ -1,0 +1,55 @@
+#服务端口
+server:
+  port: 9001
+
+#应用名称
+spring:
+  application:
+    name: api-passenger
+  redis:
+    database: 0
+    host: 192.168.100.4
+    port: 6379
+    timeout: 2000
+  #zipkin
+  zipkin:
+    base-url: http://localhost:9411/
+  #采样比例1，百分之八采样
+  sleuth:
+    sampler:
+      rate: 1
+
+feign:
+  #开启feignhystrix
+  hystrix:
+    enabled: true
+service-sms:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+
+#注册中心
+eureka:
+  client:
+    #设置服务注册中心的URL
+    serviceUrl:
+      defaultZone: http://localhost:7900/eureka/
+    instance:
+      hostname: localhost
+      instance-id: api-passenger
+
+#Admin监控
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      ##默认是never
+      show-details: ALWAYS
+      enabled: true
+
+logging:
+  level:
+    org.springframework: DEBUG
+    com.online.taxi.passenger.feign.ServiceForecast: debug
